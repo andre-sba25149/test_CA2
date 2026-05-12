@@ -61,7 +61,7 @@ monthly_summary['Date'] = monthly_summary['Date'].dt.to_period('M')
 st.title('Online Retail Data Summary')
 
 data=top_item
-data['Date'] = pd.to_datetime(data['Date'])
+data['Date'] = pd.to_datetime(data['Date'], dayfirst=True)
 years = sorted(data['Date'].dt.year.unique().tolist())
 selected_year = st.sidebar.selectbox('Filter by year', ['All'] + [str(y) for y in years])
 

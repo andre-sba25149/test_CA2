@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 groceries_df = pd.read_csv("Groceries_dataset.csv")
 top_item = pd.read_csv("Groceries_dataset.csv")
 item = top_item['itemDescription'].value_counts().head(10)
-combination = groceries_df['all_items'].value_counts().head(10)
+
 client = groceries_df['Member_number'].value_counts().head(10)
 
 

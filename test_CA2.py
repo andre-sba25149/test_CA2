@@ -60,6 +60,7 @@ monthly_summary['Date'] = monthly_summary['Date'].dt.to_period('M')
 
 st.title('Online Retail Data Summary')
 
+data=top_item
 # --- SIDEBAR FILTER (Replaces your Combobox) ---
 years = sorted(data['Date'].dt.year.unique().tolist())
 selected_year = st.sidebar.selectbox('Filter by year', ['All'] + [str(y) for y in years])

@@ -52,7 +52,7 @@ daily_summary['Date'] = pd.to_datetime(daily_summary['Date'], dayfirst=True)
 monthly_data = daily_summary.set_index('Date')
 
 
-monthly_summary = monthly_data['total_sold'].resample('M').sum().reset_index()
+monthly_summary = monthly_data['total_sold'].resample('ME').sum().reset_index()
 monthly_summary['Date'] = monthly_summary['Date'].dt.to_period('M')
 
 

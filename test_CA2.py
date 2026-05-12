@@ -65,6 +65,16 @@ data['Date'] = pd.to_datetime(data['Date'], dayfirst=True)
 years = sorted(data['Date'].dt.year.unique().tolist())
 selected_year = st.sidebar.selectbox('Filter by year', ['All'] + [str(y) for y in years])
 
+
+if selected_year == 'All':
+    filtered_df = data
+else:
+    filtered_df = data[data['Date'].dt.year == int(selected_year)]
+
+st.write(f"Showing data for: {selected_year}")
+# st.pyplot(your_figure)
+
+
 # --- SIDEBAR FILTER (Replaces your Combobox) ---
 years = sorted(data['Date'].dt.year.unique().tolist())
 selected_year = st.sidebar.selectbox('Filter by year', ['All'] + [str(y) for y in years])

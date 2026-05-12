@@ -2,10 +2,59 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# --- DATA LOADING ---
-# (Ensure your data loading logic for top_item, monthly_summary etc. is here)
-data = top_item 
-data['Date'] = pd.to_datetime(data['Date'], dayfirst=True)
+top_item = pd.read_csv("Groceries_dataset.csv")
+item = top_item['itemDescription'].value_counts().head(10)
+combination = groceries_df['all_items'].value_counts().head(10)
+client = groceries_df['Member_number'].value_counts().head(10)
+
+
+top_item['Date'] = pd.to_datetime(top_item['Date'], dayfirst=True)
+
+
+top_item = top_item.sort_values('Date')
+
+top_item['Date'] = top_item['Date'].dt.strftime('%d-%m-%Y')
+
+basket_item = top_item.copy()
+
+basket_item = basket_item.groupby(["Member_number", "Date"], as_index=False)["itemDescription"].count()
+
+basket_item = basket_item.rename(columns={"itemDescription":"basket_item"})
+
+
+bins = [0, 5, 10, 15, 20, 25, 30, 35, 40, float('inf')]
+labels = ['1-5', '6-10', '11-15', '16-20', '21-25', '26-30', '31-35', '36-40', '40+']
+basket_item['basket_item'] = pd.cut(basket_item['basket_item'], bins=bins, labels=labels)
+
+
+basket_item['Date'] = pd.to_datetime(basket_item['Date'], dayfirst=True)
+
+basket_item = basket_item.sort_values('Date')
+
+
+
+dash_3 = pd.read_csv("Groceries_dataset.csv")
+dash_3['Date'] = pd.to_datetime(dash_3['Date'], dayfirst=True)
+
+
+
+daily_summary = dash_3.groupby('Date')['itemDescription'].count().reset_index()
+daily_summary.columns = ['Date', 'total_sold']
+
+daily_summary = daily_summary.sort_values('Date')
+daily_summary['Date'] = daily_summary['Date'].dt.strftime('%d-%m-%Y')
+
+
+daily_summary['Date'] = pd.to_datetime(daily_summary['Date'], dayfirst=True)
+
+monthly_data = daily_summary.set_index('Date')
+
+
+monthly_summary = monthly_data['total_sold'].resample('M').sum().reset_index()
+monthly_summary['Date'] = monthly_summary['Date'].dt.to_period('M')
+
+
+
 
 st.title('Online Retail Data Summary')
 
